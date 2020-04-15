@@ -1,0 +1,25 @@
+matanhalfon, lioraryepaz
+===============================================================================
+Lior Paz, ID 206240996, lior.paz1@mail.huji.ac.il
+Matan Halfon, ID 205680648, matan.halfon@mail.huji.ac.il
+===============================================================================
+
+                           Project 2 - Combinational Chips
+                           ----------------------------
+  
+
+Submitted Files
+---------------
+README - This file.
+Add16.hdl - add 2 16 bit numbers
+ALU.hdl - An arithmetic logic unit
+FullAdder.hdl - add a+b+c (1 bit integers)
+HalfAdder.hdl - add a+b (1 bit integers)
+Inc16.hdl - add 1 to 16bit number
+Mul.hdl - multiplies 2 numbers
+ShiftLeft.hdl - Arithmetic shift, shift the number one bit left
+ShiftRight.hdl - Arithmetic shift, shift the number one bit right
+
+Remarks
+-------
+* Mul has many Nands... hope its ok :)

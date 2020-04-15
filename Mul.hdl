@@ -1,0 +1,62 @@
+CHIP Mul{
+    IN a[16], b[16];
+    OUT out[16];
+
+    PARTS:
+	// The program simulates long mult
+	// part 1 - shift left of the first number
+	ShiftLeft(in=a,out=out1);
+	ShiftLeft(in=out1,out=out2);
+	ShiftLeft(in=out2,out=out3);
+	ShiftLeft(in=out3,out=out4);
+	ShiftLeft(in=out4,out=out5);
+	ShiftLeft(in=out5,out=out6);
+	ShiftLeft(in=out6,out=out7);
+	ShiftLeft(in=out7,out=out8);
+	ShiftLeft(in=out8,out=out9);
+	ShiftLeft(in=out9,out=out10);
+	ShiftLeft(in=out10,out=out11);
+	ShiftLeft(in=out11,out=out12);
+	ShiftLeft(in=out12,out=out13);
+	ShiftLeft(in=out13,out=out14);
+	// part 2 - choose if to take the value or 0, according to the bits of the second number
+	Mux16(a=false,b=a,sel=b[0],out=Mul0);
+	Mux16(a=false,b=out1,sel=b[1],out=Mul1);
+	Mux16(a=false,b=out2,sel=b[2],out=Mul2);
+	Mux16(a=false,b=out3,sel=b[3],out=Mul3);
+	Mux16(a=false,b=out4,sel=b[4],out=Mul4);
+	Mux16(a=false,b=out5,sel=b[5],out=Mul5);
+	Mux16(a=false,b=out6,sel=b[6],out=Mul6);
+	Mux16(a=false,b=out7,sel=b[7],out=Mul7);
+	Mux16(a=false,b=out8,sel=b[8],out=Mul8);
+	Mux16(a=false,b=out9,sel=b[9],out=Mul9);
+	Mux16(a=false,b=out10,sel=b[10],out=Mul10);
+	Mux16(a=false,b=out11,sel=b[11],out=Mul11);
+	Mux16(a=false,b=out12,sel=b[12],out=Mul12);
+	Mux16(a=false,b=out13,sel=b[13],out=Mul13);
+	Mux16(a=false,b=out14,sel=b[14],out=Mul14);
+	// add them all together
+	Add16(a=Mul0,b=Mul1,out=Add1);
+	Add16(a=Add1,b=Mul2,out=Add2);
+	Add16(a=Add2,b=Mul3,out=Add3);
+	Add16(a=Add3,b=Mul4,out=Add4);
+	Add16(a=Add4,b=Mul5,out=Add5);
+	Add16(a=Add5,b=Mul6,out=Add6);
+	Add16(a=Add6,b=Mul7,out=Add7);
+	Add16(a=Add7,b=Mul8,out=Add8);
+	Add16(a=Add8,b=Mul9,out=Add9);
+	Add16(a=Add9,b=Mul10,out=Add10);
+	Add16(a=Add10,b=Mul11,out=Add11);
+	Add16(a=Add11,b=Mul12,out=Add12);
+	Add16(a=Add12,b=Mul13,out=Add13);
+	Add16(a=Add13,b=Mul14,out[0..14]=Add14);
+	// sign bit
+	Xor(a=a[15],b=b[15],out=sign);
+	And16(a[0..14]=Add14,a[15]=sign,b=true,out[0..7]=tempout1,out[8..14]=tempout2,out[15]=signtemp);
+	// handle the case of 1000000000000000
+	Or8Way(in=tempout1,out=fhalfzero);
+	Or8Way(in[0..6]=tempout2,in[7]=false,out=shalfzero);
+	Or(a=fhalfzero,b=shalfzero,out=zrnot);
+	Mux16(a=false,b[0..7]=tempout1,b[8..14]=tempout2,b[15]=signtemp,sel=zrnot,out=out);
+	
+}
